@@ -1,0 +1,150 @@
+/* style.css — 更新版（result-panel / number の前面表示を確保） */
+:root{
+  --bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-2: #06b6d4;
+  --card: #f8fafc;
+  --shadow: 0 10px 30px rgba(16,24,40,0.08);
+  --radius: 12px;
+  --map-small: 240px;
+  --panel-height: 320px;
+  --font-sans: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body,#app{height:100%;margin:0;font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:#0f172a;overflow:hidden}
+
+/* ensure the number elements are positioned above everything */
+.result-number{
+  opacity:1;
+  position:relative;
+  z-index:1000000;
+  pointer-events:none;
+}
+
+/* header */
+.topbar{
+  height:72px;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid #eef2f7;background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+  backdrop-filter: blur(6px);position:relative;z-index:80;
+}
+.logo{font-weight:800;font-size:20px;display:flex;flex-direction:column;line-height:1;}
+.logo strong{color:var(--accent);font-weight:900}
+.logo .sub{font-size:11px;color:var(--muted);font-weight:500}
+
+.controls{display:flex;align-items:center;gap:12px}
+.round-info{display:flex;align-items:baseline;gap:6px;font-weight:700;color:var(--muted)}
+.round-info #round{font-size:20px;color:#111827}
+.btn{padding:8px 14px;border-radius:10px;border:none;background:transparent;cursor:pointer;font-weight:700}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;box-shadow:var(--shadow)}
+.btn:disabled{opacity:0.48;cursor:not-allowed}
+
+.info-inline{font-size:13px;color:var(--muted);margin-left:8px}
+
+/* main area: iframe fills available space exactly (no scroll) */
+.main{height:calc(100vh - 72px - 36px); display:block; padding:0; margin:0}
+.sv-area{height:100%;position:relative;background:#e9f6ff;overflow:hidden}
+.sv-wrap{position:relative;height:100%;width:100%}
+
+/* iframe fills exactly sv-wrap */
+.sv-iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#cfe3ff;z-index:0}
+
+/* subtle mask top-left */
+.sv-mask.topleft{position:absolute;left:0px;top:20px;width:280px;height:44px;background:linear-gradient(90deg,rgba(255,255,255,0.95),rgba(255,255,255,0.7));border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);pointer-events:none;z-index:20}
+
+/* small-map overlay (initial small) */
+.small-map{
+  position:absolute;right:18px;bottom:18px;width:var(--map-small);height:var(--map-small);
+  border-radius:12px;overflow:hidden;border:6px solid rgba(255,255,255,0.95);box-shadow:var(--shadow);
+  transition: all 480ms cubic-bezier(.2,.9,.3,1);z-index:120;background:rgba(255,255,255,0.86);
+  cursor:grab;transform-origin:right bottom;
+  display:flex;
+}
+/* hover lift */
+.small-map:hover{transform:translateY(-6px) scale(1.02)}
+
+/* small-close: 最前面に（ただし result-panel よりは低く設定） */
+.small-close{
+  position:absolute;right:8px;top:8px;z-index:99999;border:0;background:rgba(0,0,0,0.6);color:#fff;border-radius:6px;padding:6px 8px;font-size:13px;display:block;cursor:pointer;
+  box-shadow:0 6px 18px rgba(2,6,23,0.12);
+}
+
+/* reveal state: large cinematic panel */
+.small-map.reveal{
+  width:86%;
+  height:60%;
+  right:7%;
+  bottom:6%;
+  border-radius:14px;
+  border:8px solid rgba(255,255,255,0.98);
+  background:rgba(255,255,255,0.98);
+}
+
+/* compact state after reveal */
+.small-map.compact{
+  width:320px;
+  height:220px;
+  right:18px;
+  bottom:18px;
+  border-radius:10px;
+  border:6px solid rgba(255,255,255,0.92);
+}
+.result-panel.show{transform:translateY(0)}
+
+.result-inner{width:100%;max-width:1100px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px}
+.result-left{display:flex;flex-direction:column;gap:12px}
+.result-left h3{margin:0;font-size:22px;font-weight:800}
+.result-time{font-size:16px;color:var(--muted);font-weight:600}
+.result-score{font-size:20px;font-weight:800;color:var(--accent)}
+
+/* numeric span styling so we can animate numbers nicely */
+.result-number .num{
+  display:inline-block;
+  min-width:80px;
+  text-align:right;
+  font-family:var(--font-sans);
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:0.2px;
+  color:#0b1220;
+  position:relative;
+  z-index:1000001;
+}
+
+/* result actions */
+.result-actions{display:flex;gap:12px;align-items:center}
+
+/* footer */
+.footer{height:36px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;border-top:1px solid #f1f5f9}
+
+/* responsive */
+@media (max-width:900px){
+  .small-map.reveal{width:92%;height:56%;right:4%;bottom:4%}
+  .small-map{width:200px;height:200px;right:12px;bottom:12px}
+  .result-number .num{min-width:64px;font-size:18px}
+}
+/* 結果パネルを「上から落ちてくるカード」にする */
+.result-panel{
+  position:fixed;
+  left:8%;
+  top:-400px; /* 初期は画面外の上に置く */
+  transform:translateX(-50%) scale(0.95);
+  width:90%;
+  max-width:905px;
+  height:160px;
+  background:linear-gradient(180deg,#ffffff,#f7fbff);
+  border-radius:16px;
+  box-shadow:0 12px 40px rgba(2,6,23,0.15);
+  opacity:0;
+  z-index:999999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.result-panel.show{
+  /* showクラスはJS側でanime.jsが制御するのでここでは位置固定しない */
+}

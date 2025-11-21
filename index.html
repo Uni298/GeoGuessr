@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>GeoGuesser — Single Player</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script defer src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- フォント：本家に寄せたモダンな見た目（Montserrat） -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- anime.js -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="logo">
+        <strong>Geo</strong>Guesser
+        <span class="sub">Single Player — no API</span>
+      </div>
+      <div class="controls">
+        <div class="round-info">
+          <div id="round">1</div>
+          <div class="muted">/ <span id="total">10</span></div>
+        </div>
+        <div class="info-inline muted" id="sel-info">選択: <span id="sel-lat">—</span>, <span id="sel-lng">—</span> ・ 経過: <span id="elapsed">0.00</span>s</div>
+        <button id="submit" class="btn primary">回答</button>
+        <button id="next" class="btn" disabled>次の問題</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Street View 埋め込み（全面表示） -->
+      <section class="sv-area" id="sv-area">
+        <div class="sv-wrap">
+          <iframe id="streetview" class="sv-iframe" allowfullscreen loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" src="about:blank"></iframe>
+
+          <!-- 左上の StreetView 情報を隠すマスク -->
+          <div class="sv-mask topleft"></div>
+
+          <!-- 右下に小さめのマップ（オーバーレイ）。拡大時は下からスライド -->
+          <div id="small-map" class="small-map" title="クリックで拡大／クリックで推測">
+            <!-- 右上の縮小ボタン（最前面に） -->
+            <button id="small-close" class="small-close" aria-label="閉じる小マップ" title="閉じる">✕</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 結果パネル（下からスライド）。数字はここでアニメーション表示される -->
+    <div id="result-panel" class="result-panel" aria-hidden="true">
+      <div class="result-inner">
+        <div class="result-left">
+          <h3 id="result-distance" class="result-number" data-type="distance">距離: <span class="num">—</span> km</h3>
+          <div id="result-time" class="result-time result-number" data-type="time">時間: <span class="num">—</span> 秒</div>
+          <div id="result-score" class="result-score result-number" data-type="score">スコア: <span class="num">—</span></div>
+        </div>
+        <div class="result-right">
+          <div class="result-actions">
+            <button id="next-round" class="btn primary" disabled>次の問題</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer muted">spawn.json から読み込みます。ローカルの HTTP サーバーで開いてください。</footer>
+  </div>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

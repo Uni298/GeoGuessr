@@ -53,7 +53,7 @@ body{background:var(--bg);color:#0f172a;overflow:hidden}
 .sv-iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#cfe3ff;z-index:0}
 
 /* subtle mask top-left */
-.sv-mask.topleft{position:absolute;left:0px;top:20px;width:280px;height:44px;background:linear-gradient(90deg,rgba(255,255,255,0.95),rgba(255,255,255,0.7));border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);pointer-events:none;z-index:20}
+.sv-mask.topleft{position:absolute;left:0px;top:0px;width:280px;height:70px;background:linear-gradient(90deg,rgba(255,255,255,1.0),rgba(255,255,255,1.0));border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);pointer-events:none;z-index:20}
 
 /* small-map overlay (initial small) */
 .small-map{
